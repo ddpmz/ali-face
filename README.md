@@ -15,8 +15,9 @@ $ composer require renfan/face -vvv
 
 输入命令添加配置文件`face.php`
 
-`php artisan vendor:publish --provider="Renfan\Face\ServiceProvider"`
-
+```php
+php artisan vendor:publish --provider="Renfan\Face\ServiceProvider"
+```
 ```php
 return [
     'key' => env('ALI_ACCESS_KEY'),
