@@ -1,0 +1,26 @@
+{
+    "name": "renfan\/face",
+    "description": "A face SDK",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tony",
+            "email": "renfan1204@qq.com"
+        }
+    ],
+    "require": {
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Renfan\\Face\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Renfan\\Face\\ServiceProvider"
+            ]
+        }
+    }
+}
