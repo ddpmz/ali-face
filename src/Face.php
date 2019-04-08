@@ -25,23 +25,23 @@ class Face
      * @param $key
      * @param $secret
      */
-    public function __construct($key, $secret)
+    public function __construct(string $key, string $secret)
     {
         $this->key = $key;
         $this->secret = $secret;
     }
 
-    public function verifyByUrl($image1, $image2)
+    public function verifyByUrl(string $image1, string $image2)
     {
         return $this->verify($image1, $image2, 0);
     }
 
-    public function verifyByContent($image1, $image2)
+    public function verifyByContent(string $image1, string $image2)
     {
         return $this->verify($image1, $image2, 1);
     }
 
-    public function verify($image1, $image2, $type = 0)
+    public function verify(string $image1, string $image2, $type = 0)
     {
         if (!\in_array($type, [0, 1])) {
             throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
@@ -51,17 +51,17 @@ class Face
         return json_decode($file, true);
     }
 
-    public function detectByUrl($image)
+    public function detectByUrl(string $image)
     {
         return $this->detect($image, 0);
     }
 
-    public function detectByContent($image)
+    public function detectByContent(string $image)
     {
         return $this->detect($image, 1);
     }
 
-    public function detect($image, $type = 0)
+    public function detect(string $image, int $type = 0)
     {
         if (!\in_array($type, [0, 1])) {
             throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
@@ -71,17 +71,17 @@ class Face
         return json_decode($file, true);
     }
 
-    public function attributeByUrl($image)
+    public function attributeByUrl(string $image)
     {
         return $this->attribute($image, 0);
     }
 
-    public function attributeByContent($image)
+    public function attributeByContent(string $image)
     {
         return $this->attribute($image, 1);
     }
 
-    public function attribute($image, $type = 0)
+    public function attribute(string $image, int $type = 0)
     {
         if (!\in_array($type, [0, 1])) {
             throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
@@ -95,13 +95,13 @@ class Face
      * 阿里云api校验.
      *
      * @param $content
-     * @param $path [Api地址]
+     * @param $path  [Api地址]
      *
      * @return false|string
      *
      * @throws InvalidArgumentException
      */
-    public function aliApiAccess($content, $path)
+    public function aliApiAccess(string $content, string $path)
     {
         if (!\in_array($path, ['detect', 'attribute', 'verify'])) {
             throw new InvalidArgumentException('Invalid type value(detect, attribute, verify): '.$path);
@@ -162,7 +162,7 @@ class Face
      *
      * @return false|string
      */
-    public function getVerifyPostBodyByType($image1, $image2, $type = 0)
+    public function getVerifyPostBodyByType(string $image1, string $image2, $type = 0)
     {
         if (0 == $type) {
             $body = [
@@ -181,7 +181,7 @@ class Face
         return json_encode($body);
     }
 
-    public function getDetectPostBodyByType($image, $type = 0)
+    public function getDetectPostBodyByType(string $image, int $type = 0)
     {
         if (0 == $type) {
             $body = [
@@ -198,7 +198,7 @@ class Face
         return json_encode($body);
     }
 
-    public function getAttributePostBodyByType($image, $type = 0)
+    public function getAttributePostBodyByType(string $image, int $type = 0)
     {
         if (0 == $type) {
             $body = [
