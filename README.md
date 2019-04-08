@@ -35,21 +35,23 @@ ALI_ACCESS_KEY_SECRET=xxx
 
 ## 使用
 
-### 图片url对比
+### 图片对比 `verify`
+
+#### url 方式
 ```php
 $image1 = 'a.com/1.jpg';
 $image2 = 'a.com/2.jpg';
 $res = app('face')->verifyByUrl($image1, $image2);
 ```
 
-### 图片的base64编码对比
+#### base64 方式
 ```php
 $image1 = 'xxx';
 $image2 = 'xxx';
 $res = app('face')->verifyByContent($image1, $image2);
 ```
 
-### 结果
+#### 结果
 ```json
 {
   "confidence": 99.99996948242188,
@@ -76,6 +78,109 @@ $res = app('face')->verifyByContent($image1, $image2);
 
 ```
 字段说明，见 [人脸比对API调用说明](https://help.aliyun.com/knowledge_detail/53535.html)
+
+### 人脸检测定位
+
+#### url 方式
+
+```php
+$image = 'a.com/1.jpg';
+$res = app('face')->detectByUrl($image);
+```
+
+#### base64 方式
+
+```php
+$image = 'xxxx';
+$res = app('face')->detectByContent($image);
+```
+
+#### 结果
+```json
+{
+  "face_num": 1,
+  "face_rect": [
+    280,
+    350,
+    430,
+    590
+  ],
+  "face_prob": [
+    1
+  ],
+  "pose": [
+    0.20114891231060028,
+    -0.4934055507183075,
+    0.7045236229896545
+  ],
+  "landmark_num": 105,
+  "landmark": [
+    290.78765869140625,
+    549.17578125,
+    // ...
+  ],
+  "iris": [
+    391.3370666503906,
+    577.3011474609375,
+    17.18027114868164,
+    593.888916015625,
+    577.9119873046875,
+    17.18027114868164
+  ],
+  "errno": 0,
+  "request_id": "3a91b868-5af9-4980-a088-54cbacf2e40b"
+}
+
+```
+字段说明，见 [人脸检测定位API调用说明](https://help.aliyun.com/knowledge_detail/53399.html)
+
+### 人脸属性识别
+
+#### url 方式
+
+```php
+$image = 'a.com/1.jpg';
+$res = app('face')->attributeByUrl($image);
+```
+
+#### base64 方式
+
+```php
+$image = 'xxxx';
+$res = app('face')->attributeByContent($image);
+```
+
+#### 结果
+```json
+{
+  "face_num": 1,
+  "face_rect": [
+    280,
+    350,
+    430,
+    590
+  ],
+  "face_prob": [
+    1
+  ],
+  "pose": [
+    0.20114891231060028,
+    -0.4934055507183075,
+    0.7045236229896545
+  ],
+  "landmark_num": 105,
+  "landmark": [
+    290.78765869140625,
+    549.17578125,
+    // ...
+    -0.00849494431167841
+  ],
+  "errno": 0,
+  "request_id": "e54be58b-1190-42bf-9abe-ebbb2bc9eabb"
+}
+
+```
+字段说明，见 [人脸属性识别API调用说明](https://help.aliyun.com/knowledge_detail/53520.html)
 
 ## License
 

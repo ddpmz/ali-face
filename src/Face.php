@@ -35,9 +35,43 @@ class Face
     {
 
         if (!\in_array($type, [0, 1])) {
-            throw new InvalidArgumentException('Invalid type value()0/1: ' . $type);
+            throw new InvalidArgumentException('Invalid type value(0/1): ' . $type);
         }
-        $file = $this->aliApiAccess($this->getPostBodyByType($image1, $image2, $type));
+        $file = $this->aliApiAccess($this->getVerifyPostBodyByType($image1, $image2, $type), 'verify');
+
+        return json_decode($file, true);
+    }
+
+    public function detectByUrl($image) {
+        return $this->detect($image, 0);
+    }
+
+    public function detectByContent($image) {
+        return $this->detect($image, 1);
+    }
+
+    public function detect($image, $type = 0) {
+        if (!\in_array($type, [0, 1])) {
+            throw new InvalidArgumentException('Invalid type value(0/1): ' . $type);
+        }
+        $file = $this->aliApiAccess($this->getDetectPostBodyByType($image, $type), 'detect');
+
+        return json_decode($file, true);
+    }
+
+    public function attributeByUrl($image) {
+        return $this->attribute($image, 0);
+    }
+
+    public function attributeByContent($image) {
+        return $this->attribute($image, 1);
+    }
+
+    public function attribute($image, $type = 0) {
+        if (!\in_array($type, [0, 1])) {
+            throw new InvalidArgumentException('Invalid type value(0/1): ' . $type);
+        }
+        $file = $this->aliApiAccess($this->getAttributePostBodyByType($image, $type), 'attribute');
 
         return json_decode($file, true);
     }
@@ -45,10 +79,16 @@ class Face
     /**
      * 阿里云api校验
      * @param $content
+     * @param $path [Api地址]
      * @return false|string
+     * @throws InvalidArgumentException
      */
-    public function aliApiAccess($content) {
-        $url = 'https://dtplus-cn-shanghai.data.aliyuncs.com/face/verify';
+    public function aliApiAccess($content, $path) {
+        if (!\in_array($path, ['detect', 'attribute', 'verify'])) {
+            throw new InvalidArgumentException('Invalid type value(detect, attribute, verify): ' . $path);
+        }
+
+        $url = 'https://dtplus-cn-shanghai.data.aliyuncs.com/face/' . $path;
         $options = array(
             'http' => array(
                 'header' => array(
@@ -99,9 +139,8 @@ class Face
      * @param $type
      * @return false|string
      */
-    private function getPostBodyByType($image1, $image2, $type = 0)
+    public function getVerifyPostBodyByType($image1, $image2, $type = 0)
     {
-        $body = [];
         if ($type == 0) {
             $body = [
                 'type' => $type,
@@ -113,6 +152,37 @@ class Face
                 'type' => $type,
                 'content_1' => $image1,
                 'content_2' => $image2
+            ];
+        }
+        return json_encode($body);
+    }
+
+    public function getDetectPostBodyByType($image, $type = 0) {
+        if ($type == 0) {
+            $body = [
+                'type' => $type,
+                'image_url' => $image
+            ];
+        } else {
+            $body = [
+                'type' => $type,
+                'content' => $image
+            ];
+        }
+        return json_encode($body);
+    }
+
+
+    public function getAttributePostBodyByType($image, $type = 0) {
+        if ($type == 0) {
+            $body = [
+                'type' => $type,
+                'image_url' => $image
+            ];
+        } else {
+            $body = [
+                'type' => $type,
+                'content' => $image
             ];
         }
         return json_encode($body);
