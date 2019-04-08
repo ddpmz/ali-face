@@ -37,7 +37,7 @@ ALI_ACCESS_KEY_SECRET=xxx
 
 ## 使用
 
-### 图片对比 `verify`
+### 人脸比对 `verify`
 
 #### url 方式
 ```php
