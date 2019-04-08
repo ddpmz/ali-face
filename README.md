@@ -11,7 +11,24 @@ $ composer require renfan/face -vvv
 
 ## 配置
 
-在使用本扩展前，你需要开通阿里云人脸识别服务 [](https://face.data.aliyun.com/console)，并获取 AccessKey
+> 在使用本扩展前，你需要开通阿里云人脸识别服务 [](https://face.data.aliyun.com/console)，并获取 AccessKey
+
+输入命令添加配置文件`face.php`
+
+`php artisan vendor:publish --provider="Renfan\Face\ServiceProvider"`
+
+```php
+return [
+    'key' => env('ALI_ACCESS_KEY'),
+    'secret' => env('ALI_ACCESS_KEY_SECRET'),
+];
+```
+在 .env 文件中加入阿里云AccessKey
+```php
+
+ALI_ACCESS_KEY=xxx
+ALI_ACCESS_KEY_SECRET=xxx
+```
 
 ## 使用
 
