@@ -4,6 +4,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/renfan/face.svg?style=flat-square)](https://packagist.org/packages/renfan/face)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://travis-ci.org/renfan/face.svg?branch=master)](https://travis-ci.org/renfan/face)
 ![StyleCI build status](https://github.styleci.io/repos/180088039/shield) 
 
 ## 安装
