@@ -17,7 +17,8 @@ class FaceTest extends TestCase
         $this->fail('Failed to assert verify throw exception with invalid argument.');
     }
 
-    public function testAliApiAccessWithInvalidPath() {
+    public function testAliApiAccessWithInvalidPath()
+    {
         $f = new Face('mock-key', 'mock-key');
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid type value(detect, attribute, verify): foo');
