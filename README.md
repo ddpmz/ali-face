@@ -2,6 +2,8 @@
 
 <p align="center">:rainbow: 基于阿里云平台的人脸识别组件。</p>
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/renfan/face.svg?style=flat-square)](https://packagist.org/packages/renfan/face)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
 ## 安装
 
