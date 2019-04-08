@@ -43,7 +43,7 @@ class Face
 
     public function verify(string $image1, string $image2, $type = 0)
     {
-        if (!\in_array($type, [0, 1])) {
+        if (! \in_array($type, [0, 1])) {
             throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
         }
         $file = $this->aliApiAccess($this->getVerifyPostBodyByType($image1, $image2, $type), 'verify');
@@ -63,7 +63,7 @@ class Face
 
     public function detect(string $image, int $type = 0)
     {
-        if (!\in_array($type, [0, 1])) {
+        if (! \in_array($type, [0, 1])) {
             throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
         }
         $file = $this->aliApiAccess($this->getDetectPostBodyByType($image, $type), 'detect');
@@ -83,7 +83,7 @@ class Face
 
     public function attribute(string $image, int $type = 0)
     {
-        if (!\in_array($type, [0, 1])) {
+        if (! \in_array($type, [0, 1])) {
             throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
         }
         $file = $this->aliApiAccess($this->getAttributePostBodyByType($image, $type), 'attribute');
@@ -103,23 +103,23 @@ class Face
      */
     public function aliApiAccess(string $content, string $path)
     {
-        if (!\in_array($path, ['detect', 'attribute', 'verify'])) {
+        if (! \in_array($path, ['detect', 'attribute', 'verify'])) {
             throw new InvalidArgumentException('Invalid type value(detect, attribute, verify): '.$path);
         }
 
         $url = 'https://dtplus-cn-shanghai.data.aliyuncs.com/face/'.$path;
-        $options = array(
-            'http' => array(
-                'header' => array(
+        $options = [
+            'http' => [
+                'header' => [
                     'accept' => 'application/json',
                     'content-type' => 'application/json',
                     'date' => gmdate("D, d M Y H:i:s \G\M\T"),
                     'authorization' => '',
-                ),
+                ],
                 'method' => 'POST', //可以是 GET, POST, DELETE, PUT
                 'content' => $content, //如有数据，请用json_encode()进行编码
-            ),
-        );
+            ],
+        ];
         $http = $options['http'];
         $header = $http['header'];
         $urlObj = parse_url($url);
