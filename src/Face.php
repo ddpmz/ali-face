@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * preset: symfony
+ */
 
 namespace Renfan\Face;
 
@@ -12,6 +15,7 @@ class Face
 
     /**
      * Face constructor.
+     *
      * @param $key
      * @param $secret
      */
@@ -33,43 +37,48 @@ class Face
 
     public function verify($image1, $image2, $type = 0)
     {
-
         if (!\in_array($type, [0, 1])) {
-            throw new InvalidArgumentException('Invalid type value(0/1): ' . $type);
+            throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
         }
         $file = $this->aliApiAccess($this->getVerifyPostBodyByType($image1, $image2, $type), 'verify');
 
         return json_decode($file, true);
     }
 
-    public function detectByUrl($image) {
+    public function detectByUrl($image)
+    {
         return $this->detect($image, 0);
     }
 
-    public function detectByContent($image) {
+    public function detectByContent($image)
+    {
         return $this->detect($image, 1);
     }
 
-    public function detect($image, $type = 0) {
+    public function detect($image, $type = 0)
+    {
         if (!\in_array($type, [0, 1])) {
-            throw new InvalidArgumentException('Invalid type value(0/1): ' . $type);
+            throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
         }
         $file = $this->aliApiAccess($this->getDetectPostBodyByType($image, $type), 'detect');
 
         return json_decode($file, true);
     }
 
-    public function attributeByUrl($image) {
+    public function attributeByUrl($image)
+    {
         return $this->attribute($image, 0);
     }
 
-    public function attributeByContent($image) {
+    public function attributeByContent($image)
+    {
         return $this->attribute($image, 1);
     }
 
-    public function attribute($image, $type = 0) {
+    public function attribute($image, $type = 0)
+    {
         if (!\in_array($type, [0, 1])) {
-            throw new InvalidArgumentException('Invalid type value(0/1): ' . $type);
+            throw new InvalidArgumentException('Invalid type value(0/1): '.$type);
         }
         $file = $this->aliApiAccess($this->getAttributePostBodyByType($image, $type), 'attribute');
 
@@ -77,59 +86,66 @@ class Face
     }
 
     /**
-     * 阿里云api校验
+     * 阿里云api校验.
+     *
      * @param $content
      * @param $path [Api地址]
-     * @return false|string
+     *
      * @throws InvalidArgumentException
+     *
+     * @return false|string
      */
-    public function aliApiAccess($content, $path) {
+    public function aliApiAccess($content, $path)
+    {
         if (!\in_array($path, ['detect', 'attribute', 'verify'])) {
-            throw new InvalidArgumentException('Invalid type value(detect, attribute, verify): ' . $path);
+            throw new InvalidArgumentException('Invalid type value(detect, attribute, verify): '.$path);
         }
 
-        $url = 'https://dtplus-cn-shanghai.data.aliyuncs.com/face/' . $path;
-        $options = array(
-            'http' => array(
-                'header' => array(
-                    'accept' => "application/json",
-                    'content-type' => "application/json",
-                    'date' => gmdate("D, d M Y H:i:s \G\M\T"),
-                    'authorization' => ''
-                ),
-                'method' => "POST", //可以是 GET, POST, DELETE, PUT
-                'content' => $content //如有数据，请用json_encode()进行编码
-            )
-        );
+        $url = 'https://dtplus-cn-shanghai.data.aliyuncs.com/face/'.$path;
+        $options = [
+            'http' => [
+                'header' => [
+                    'accept'        => 'application/json',
+                    'content-type'  => 'application/json',
+                    'date'          => gmdate("D, d M Y H:i:s \G\M\T"),
+                    'authorization' => '',
+                ],
+                'method'  => 'POST', //可以是 GET, POST, DELETE, PUT
+                'content' => $content, //如有数据，请用json_encode()进行编码
+            ],
+        ];
         $http = $options['http'];
         $header = $http['header'];
         $urlObj = parse_url($url);
-        if (empty($urlObj["query"]))
-            $path = $urlObj["path"];
-        else
-            $path = $urlObj["path"] . "?" . $urlObj["query"];
+        if (empty($urlObj['query'])) {
+            $path = $urlObj['path'];
+        } else {
+            $path = $urlObj['path'].'?'.$urlObj['query'];
+        }
         $body = $http['content'];
-        if (empty($body))
+        if (empty($body)) {
             $bodymd5 = $body;
-        else
+        } else {
             $bodymd5 = base64_encode(md5($body, true));
-        $stringToSign = $http['method'] . "\n" . $header['accept'] . "\n" . $bodymd5 . "\n" . $header['content-type'] . "\n" . $header['date'] . "\n" . $path;
+        }
+        $stringToSign = $http['method']."\n".$header['accept']."\n".$bodymd5."\n".$header['content-type']."\n".$header['date']."\n".$path;
         $signature = base64_encode(
             hash_hmac(
-                "sha1",
+                'sha1',
                 $stringToSign,
                 $this->secret, true));
-        $authHeader = "Dataplus " . "{$this->key}" . ":" . "$signature";
+        $authHeader = 'Dataplus '."{$this->key}".':'."$signature";
         $options['http']['header']['authorization'] = $authHeader;
         $options['http']['header'] = implode(
             array_map(
                 function ($key, $val) {
-                    return $key . ":" . $val . "\r\n";
+                    return $key.':'.$val."\r\n";
                 },
                 array_keys($options['http']['header']),
                 $options['http']['header']));
         $context = stream_context_create($options);
         $file = file_get_contents($url, false, $context);
+
         return $file;
     }
 
@@ -137,54 +153,59 @@ class Face
      * @param $image1
      * @param $image2
      * @param $type
+     *
      * @return false|string
      */
     public function getVerifyPostBodyByType($image1, $image2, $type = 0)
     {
         if ($type == 0) {
             $body = [
-                'type' => $type,
+                'type'        => $type,
                 'image_url_1' => $image1,
-                'image_url_2' => $image2
+                'image_url_2' => $image2,
             ];
         } else {
             $body = [
-                'type' => $type,
+                'type'      => $type,
                 'content_1' => $image1,
-                'content_2' => $image2
+                'content_2' => $image2,
             ];
         }
+
         return json_encode($body);
     }
 
-    public function getDetectPostBodyByType($image, $type = 0) {
+    public function getDetectPostBodyByType($image, $type = 0)
+    {
         if ($type == 0) {
             $body = [
-                'type' => $type,
-                'image_url' => $image
+                'type'      => $type,
+                'image_url' => $image,
             ];
         } else {
             $body = [
-                'type' => $type,
-                'content' => $image
+                'type'    => $type,
+                'content' => $image,
             ];
         }
+
         return json_encode($body);
     }
 
-
-    public function getAttributePostBodyByType($image, $type = 0) {
+    public function getAttributePostBodyByType($image, $type = 0)
+    {
         if ($type == 0) {
             $body = [
-                'type' => $type,
-                'image_url' => $image
+                'type'      => $type,
+                'image_url' => $image,
             ];
         } else {
             $body = [
-                'type' => $type,
-                'content' => $image
+                'type'    => $type,
+                'content' => $image,
             ];
         }
+
         return json_encode($body);
     }
 }

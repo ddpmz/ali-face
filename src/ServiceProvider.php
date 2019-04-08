@@ -1,8 +1,10 @@
 <?php
 
+/*
+ * preset: symfony
+ */
 
 namespace Renfan\Face;
-
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -10,14 +12,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     public function register()
     {
-        $configPath = __DIR__ . '/config/config.php';
+        $configPath = __DIR__.'/config/config.php';
 
         $this->mergeConfigFrom($configPath, 'face');
         $this->publishes([
             $configPath => config_path('face.php'),
         ], 'config');
 
-        $this->app->singleton(Face::class, function(){
+        $this->app->singleton(Face::class, function () {
             return new Face(config('face.key'), config('face.secret'));
         });
 
