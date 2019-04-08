@@ -118,8 +118,7 @@ $res = app('face')->detectByContent($image);
   "landmark_num": 105,
   "landmark": [
     290.78765869140625,
-    549.17578125,
-    // ...
+    549.17578125
   ],
   "iris": [
     391.3370666503906,
@@ -174,7 +173,6 @@ $res = app('face')->attributeByContent($image);
   "landmark": [
     290.78765869140625,
     549.17578125,
-    // ...
     -0.00849494431167841
   ],
   "errno": 0,
