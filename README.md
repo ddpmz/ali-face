@@ -6,7 +6,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://travis-ci.org/renfan/face.svg?branch=master)](https://travis-ci.org/renfan/face)
 ![StyleCI build status](https://github.styleci.io/repos/180088039/shield) 
-
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 ## 安装
 
 ```shell
